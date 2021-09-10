@@ -44,9 +44,10 @@ gawk -v FPAT='(\"[^\"]+\")|([^,]+)' -v TNR=$(cat data/$(date +"%d-%m-%y")_output
 # Convert double quotes in SQL scripts to single quotes
 tr \" \' < /scripts/insert_employer.sql > /scripts/insert_employer_tr.sql
 tr \" \' < /scripts/insert_location.sql > /scripts/insert_location_tr.sql
-tr \" \' < /scripts/insert_job.sql > /scripts/insert_job_tr.sql
+sed "s/'/''/g" /scripts/insert_job.sql > /scripts/insert_job_sed.sql
+tr \" \' < /scripts/insert_job_sed.sql > /scripts/insert_job_tr.sql
 
 # Load data into data warehouse
-psql "sslmode=disable dbname=$DB_NAME user=$DB_USER password=$DB_PASS hostaddr=$DB_HOST" -f /scripts/insert_employer.sql
-psql "sslmode=disable dbname=$DB_NAME user=$DB_USER password=$DB_PASS hostaddr=$DB_HOST" -f /scripts/insert_location.sql
-psql "sslmode=disable dbname=$DB_NAME user=$DB_USER password=$DB_PASS hostaddr=$DB_HOST" -f /scripts/insert_job.sql
+psql "sslmode=disable dbname=$DB_NAME user=$DB_USER password=$DB_PASS hostaddr=$DB_HOST" -f /scripts/insert_employer_tr.sql
+psql "sslmode=disable dbname=$DB_NAME user=$DB_USER password=$DB_PASS hostaddr=$DB_HOST" -f /scripts/insert_location_tr.sql
+psql "sslmode=disable dbname=$DB_NAME user=$DB_USER password=$DB_PASS hostaddr=$DB_HOST" -f /scripts/insert_job_tr.sql
