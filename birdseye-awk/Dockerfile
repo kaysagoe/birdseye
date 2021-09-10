@@ -26,5 +26,7 @@ COPY './scripts/generate_insert_statements.awk' 'generate_insert_statements.awk'
 WORKDIR /
 RUN 'mkdir data'
 
+CMD ["/scripts/extract.sh"]
+
 
 
