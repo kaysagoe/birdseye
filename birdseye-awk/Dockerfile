@@ -9,9 +9,7 @@ ENV DB_HOST ''
 
 RUN 'apt update'
 
-RUN 'apt install curl jq'
-
-RUN 'apt install apt-transport-https ca-certificates gnupg'
+RUN 'apt install curl jq apt-transport-https ca-certificates gnupg postgresql-client gawk'
 
 RUN 'echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-sdk -y'
 
@@ -26,8 +24,6 @@ COPY './scripts/transforms.awk' 'transforms.awk'
 COPY './scripts/generate_insert_statements.awk' 'generate_insert_statements.awk'
 
 WORKDIR /
-RUN 'apt install postgresql-client'
-RUN 'apt install gawk'
 RUN 'mkdir data'
 
 
